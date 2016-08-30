@@ -1,0 +1,14 @@
+nav#menu-wrapper.navbar.navbar-default
+	ul#menu.nav.navbar-nav.container.col-md-12
+		li.col-md-4
+			a(href='/') get Wheather
+		li.col-md-4  
+			a(href='/vidgets/all') my vidgets
+		li.col-md-3.navbar-right.container
+			unless user
+				a.navbar-link.col-md-6(href='/log-in') login
+				a.navbar-link.col-md-6(href='/register') register
+			else
+				p.navbar-text.col-md-10.container Sined in as 
+					a.navbar-link(href='/') #{user.login}
+					a.navbar-link.navbar-right(href='/log-out') logout

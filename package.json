@@ -1,0 +1,28 @@
+{
+  "name": "vidgets",
+  "version": "1.0.0",
+  "description": "test-task for intersol",
+  "main": "Vidgets.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "St.Cremer",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.0.1",
+    "autoprefixer-stylus": "^0.9.4",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "connect-redis": "^3.1.0",
+    "csso-stylus": "0.0.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "mongoose": "^4.5.9",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta5",
+    "redis": "^2.6.2",
+    "request": "^2.74.0",
+    "serve-favicon": "^2.3.0",
+    "stylus": "^0.54.5"
+  }
+}

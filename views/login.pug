@@ -1,0 +1,11 @@
+extends layout
+block content
+	p Регистрация нового пользователя
+	form(id='login')
+		.field 
+			label(for='login') Login
+			input#login(name='login' type='text' size='30')
+		.field 
+			label(for='password') Password
+			input#password(name='password' type='password' size='30')
+	button(type='button' form='login' onclick='requestNew(event,"post","/log-in",["login","password"])') log-in

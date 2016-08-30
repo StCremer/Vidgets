@@ -1,0 +1,13 @@
+extends layout
+block  append head
+	script(src='/weatherreq.js')
+block content
+	script.
+		var obj=!{JSON.stringify(vidgets)}
+		function vidgetsRender(vigets){
+			vigets.forEach(function(vidget){
+				getWeather(vidget.cityId,vidget.rangeofdates,vidget.Vid,vidget.orientation)
+			})
+		}
+		vidgetsRender(obj)
+

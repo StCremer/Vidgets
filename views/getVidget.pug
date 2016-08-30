@@ -1,0 +1,43 @@
+extends layout
+block  append head
+	script(src='/weatherreq.js')
+	script(src='/getscript.js')
+block content
+	formwrapper.row
+		.page-header
+			h1 Получите прогноз погоды
+		form.well.well-lg.col-md-6.col-md-offset-3(method='post' id='createVidget' name='createVidget' action='/vidget')
+			.field.form-group
+				label(for='city') Город
+				input.form-control(name='city' id='city' type='text'  size='15' list='cityList')
+				datalist(id='cityList' style='height:200px')
+					each cityitem in cities
+							-var city=JSON.parse(cityitem)
+							option(value=city._id) #{city.name}
+
+			.form-group
+				.field
+					p range of dates
+					label.radio-inline 
+						input(name='rangeofdates' type='radio' value='1')
+						|1 day
+					label.radio-inline 
+						input(name='rangeofdates' type='radio' value='3')
+						|3 days
+					label.radio-inline 
+						input(name='rangeofdates' type='radio' value='7')
+						|week
+				.field
+					p Orientation
+					label.radio-inline
+						input(name='orientation' type='radio' value='horizontal')
+						|Horizontal
+					label.radio-inline
+						input(name='orientation' type='radio' value='vertical')
+						|Vertical
+			unless user			
+				button(type='button' onclick='getScript()' ) get Vidget
+			else
+				button(type='button' onclick='getScript()' ) get Vidget
+				button(type='button' form='createVidget' onclick='requestNew(event,"post","/vidget",["city","rangeofdates","orientation"],"",["getScript()"])') Get and save
+

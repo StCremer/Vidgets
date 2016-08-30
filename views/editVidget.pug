@@ -1,0 +1,57 @@
+extends layout
+block  append head
+	script(src='/getscript.js')
+	script(src='/weatherreq.js')
+block content
+	formwrapper.row
+		.page-header
+			h1 Получите прогноз погоды
+		form.well.well-lg.col-md-6.col-md-offset-3(name='editVidget' id='editVidget' action='/vidget/'+Vid)
+			.field.form-group
+				label(for='city') Город
+				input.form-control(name='city' id='city' type='text' size='15' readonly value=vidget.cityId )
+			.form-group
+				.field
+					p range of dates
+					label.radio-inline 
+						if (vidget.rangeofdates=='1')
+							input(name='rangeofdates' type='radio' value='1' checked)
+							|1 day
+						else
+							input(name='rangeofdates' type='radio' value='1')
+							|1 day
+
+					label.radio-inline 
+						if (vidget.rangeofdates==='3')
+							input(name='rangeofdates' type='radio' value='3' checked)
+							|3 days
+						else
+							input(name='rangeofdates' type='radio' value='3')
+							|3 days
+
+					label.radio-inline 
+						if (vidget.rangeofdates==='7')
+							input(name='rangeofdates' type='radio' value='7' checked)
+							|week
+						else
+							input(name='rangeofdates' type='radio' value='7')
+							|week
+
+				.field
+					p Orientation
+					label.radio-inline
+						if (vidget.orientation==='horizontal')
+							input(name='orientation' type='radio' value='horizontal' checked)
+							|Horizontal
+						else
+							input(name='orientation' type='radio' value='horizontal')
+							|Horizontal
+					label.radio-inline
+						if (vidget.orientation==='vertical')
+							input(name='orientation' type='radio' value='vertical' checked)
+							|Vertical
+						else	
+							input(name='orientation' type='radio' value='vertical')
+							|Vertical
+		button(type='button' form='editVidget' onclick="putdelete(event,'put','/vidget/',"+Vid+")") APPLY CHANGES
+		button(type='button' form='editVidget' onclick="putdelete(event,'delete','/vidget/',"+Vid+")") delete vidget
