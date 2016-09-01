@@ -38,7 +38,7 @@ app.use(stylus.middleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-    name: 'Lingia[ART]',
+    name: 'Vidgets',
     store: new RedisStore({
         // host: '127.0.0.1',
         db: 0
@@ -49,6 +49,7 @@ app.use(session({
 app.use(require('./routes/index'))
 app.use(require('./routes/user'))
 app.use(require('./routes/vidgets'))
+app.use(require('./routes/forecasts'))
 
 var server = http.createServer(app).listen(3000, function() {
 

@@ -3,6 +3,9 @@ block  append head
 	script(src='/weatherreq.js')
 	script(src='/getscript.js')
 block content
+	-console.log(cities)
+	-console.log(typeof(cities))
+	-console.log('cities')
 	formwrapper.row
 		.page-header
 			h1 Получите прогноз погоды
@@ -11,9 +14,8 @@ block content
 				label(for='city') Город
 				input.form-control(name='city' id='city' type='text'  size='15' list='cityList')
 				datalist(id='cityList' style='height:200px')
-					each cityitem in cities
-							-var city=JSON.parse(cityitem)
-							option(value=city._id) #{city.name}
+					each val, cityitem in cities
+						option(value=cityitem) #{val}
 
 			.form-group
 				.field
@@ -36,8 +38,10 @@ block content
 						input(name='orientation' type='radio' value='vertical')
 						|Vertical
 			unless user			
-				button(type='button' onclick='getScript()' ) get Vidget
+				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') get Vidget
 			else
-				button(type='button' onclick='getScript()' ) get Vidget
-				button(type='button' form='createVidget' onclick='requestNew(event,"post","/vidget",["city","rangeofdates","orientation"],"",["getScript()"])') Get and save
+				
+				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') get Vidget
+
+				button(type='button' form='createVidget' onclick='getVidget(event,"post","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') Get and save
 

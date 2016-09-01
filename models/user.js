@@ -1,9 +1,7 @@
 'use strict';
-// const redisData=require('./RedisData'),
 const redis = require('redis'),
     redisClient = redis.createClient,
     mongoose = require('mongoose'),
-    // express= require('express'),
     Schema = mongoose.Schema,
     bcrypt = require('bcryptjs'),
     ObjectId = Schema.ObjectId;
@@ -11,15 +9,9 @@ const redis = require('redis'),
 mongoose.connect('mongodb://localhost/users');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    // we're connected!
-});
+db.once('open', function() {});
 
-/**
- * Our User model.
- *
- * This is how we create, edit, delete, and retrieve user accounts via MongoDB.
- */
+
 var User = mongoose.model('User', new Schema({
     id: ObjectId,
     login: { type: String, unique: true },
@@ -80,72 +72,18 @@ module.exports.requreLogin = function(req, res, next) {
     }
 }
 
-module.exports.isLogined = function(req,res,next){
-	if(req.session.user){
-		console.log('true') 
-		res.locals.user = req.session.user
-	}
-	next()
+module.exports.isLogined = function(req, res, next) {
+    if (req.session.user) {
+        console.log('true')
+        res.locals.user = req.session.user
+    }
+    next()
 }
 
 module.exports.logout = function(req, res) {
-        req.session.destroy(function(err) {
-                if (err) {
-                    res.send("Something bad happend and you weren/t logout")
-                } else { res.send("logged out") }
-            })
-        }
-
-
-        //____________________________________________________________________________________________________
-
-        // module.exports.register=function(req,res){
-        // 	let incomingData=req.body; 
-        // 	console.log('req.body ->'+JSON.stringify(req.body)); 
-        // 	redisClient.select(1);
-        // 	redisClient.exists(req.body.login,function(err,reply){
-        // 		if(err){console.log(err)}
-        // 		if(reply){res.send('The user with name '+req.body.login+'already exists')}
-        // 		else{
-        // 			redisClient.hmset(req.body.login,redisData.storeData(incomingData),function(err,reply){
-        // 				redis.print;
-        // 				res.send('user with login name '+req.body.login+'is successfully added')
-        // 			});
-        // 		}				
-        // 	})
-        // }
-
-        // module.exports.login=(req,res)=>{
-        // 	redisClient.select(1)
-        // 		redisClient.exists(req.body.login,function(err,reply){
-        // 			console.log('reply0-> '+JSON.stringify(reply)) 
-        // 			if(err){
-        // 				console.log(err)
-        // 			}
-        // 			if(reply){
-        // 					redisClient.hmget(req.body.login,'password',function(err,reply){
-        // 						console.log('req.body.password-> '+req.body.password) 
-        // 						console.log('reply1-> '+JSON.stringify(reply)) 
-        // 						if(err) console.log(err)
-        // 						if (reply==req.body.password) 
-        // 							{redisClient.hgetall(req.body.login, function(err,reply){
-        // 								console.log('reply2-> '+JSON.stringify(reply)) 
-        // 								req.session.user=reply
-        // 								req.session.logged=true
-        // 								console.log(req.session.user) 
-        // 								res.send('logged in')
-        // 							})
-        // 							}
-        // 						else{
-        // 							req.session.destroy()
-        // 							res.send('password incorrect')
-        // 						}
-        // 					})
-        // 				}
-        // 			else{
-        // 						req.session.destroy()
-        // 						res.send("there's no user with login name "+req.body.login)
-        // 				}
-
-        // 		})
-        // }
+    req.session.destroy(function(err) {
+        if (err) {
+            res.send("Something bad happend and you weren/t logout")
+        } else { res.send("logged out") }
+    })
+}

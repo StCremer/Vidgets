@@ -1,7 +1,14 @@
 const fs = require('fs'),
-    path= require('path')
+    path= require('path'),
+     redisData = require('./RedisData'),
+    redisClient = redisData.redisClient
 
-var cities =fs.readFileSync(path.join(__dirname ,'../public/citylist.json'),'utf8').trim().split('\n')
-// console.log('cities->', cities)
-// console.log('typeof(cities)->',typeof(cities))
-module.exports = cities
+module.exports.cityList=function(req,res){
+redisClient.select(4)
+redisClient.hgetall('cities',function(err,reply){
+	if(err) {console.log(err)
+		return}
+	console.log(typeof(reply),'->',reply) 
+	res.render('getVidget',{page_name:'Get Weather', cities: reply})
+})
+}

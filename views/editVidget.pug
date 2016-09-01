@@ -1,7 +1,6 @@
 extends layout
 block  append head
 	script(src='/getscript.js')
-	script(src='/weatherreq.js')
 block content
 	formwrapper.row
 		.page-header
@@ -53,5 +52,5 @@ block content
 						else	
 							input(name='orientation' type='radio' value='vertical')
 							|Vertical
-		button(type='button' form='editVidget' onclick="putdelete(event,'put','/vidget/',"+Vid+")") APPLY CHANGES
-		button(type='button' form='editVidget' onclick="putdelete(event,'delete','/vidget/',"+Vid+")") delete vidget
+		button(type='button' form='editVidget' onclick='getVidget(event,"put","/vidget/",["city","rangeofdates","orientation"],'+Vid+',["vidget(newrequest.responseText,orientation)"])') APPLY CHANGES
+		button(type='button' form='editVidget' onclick='getVidget(event,"delete","/vidget/","",'+Vid+')') delete vidget
