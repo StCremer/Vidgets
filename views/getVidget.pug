@@ -38,10 +38,10 @@ block content
 						input(name='orientation' type='radio' value='vertical')
 						|Vertical
 			unless user			
-				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') get Vidget
+				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation,Vid,rangeofdates)"])') get Vidget
 			else
 				
-				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') get Vidget
+				button(type='button' form='createVidget' onclick='getVidget(event,"get","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation,Vid,rangeofdates)"])') get Vidget
 
-				button(type='button' form='createVidget' onclick='getVidget(event,"post","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation)"])') Get and save
+				button(type='button' form='createVidget' onclick='getVidget(event,"post","/forecast/",["city","rangeofdates","orientation"],"",["vidget(newrequest.responseText,orientation,Vid,rangeofdates)"])') Get and save
 

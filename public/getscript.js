@@ -6,7 +6,7 @@ function getVidget(event, method, url, fields, Vid, callback) {
         cityId = event.target.form.elements.city.value
 
 
-    requestNew(event, method, url, fields, orientation, Vid, callback)
+    requestNew(event, method, url, fields, orientation, Vid, rangeofdates, callback)
     displayScript(cityId, rangeofdates, orientation)
         // let form = document.forms.createVidget,
         //     cityId = form.city.value,
@@ -31,11 +31,8 @@ function displayScript(cityId, rangeofdates, orientation) {
 }
 
 
-function vidget(resp, orientation, Vid) {
-    console.log('resp->', resp, '<-->', typeof(resp));
+function vidget(resp, orientation, Vid, rangeofdates) {
     var obj = JSON.parse(resp).forecast;
-    // var obj=resp;
-    console.log('obj->', obj, '<-->', typeof(obj));
     var body = document.body;
     var vidgetwrapper = document.createElement('div')
     var cityName = document.createElement('p');
@@ -45,11 +42,11 @@ function vidget(resp, orientation, Vid) {
         var vidget = document.createElement('a');
         vidget.href = '/vidget/' + Vid
 
-        vidget.style.cssText = "display:block;right: 50px;top: 20px;background:rgba(182, 182, 251, 0.73);border: 1px solid white;padding: 21px;border-radius:20px;"
+        vidget.style.cssText = "display:inline-block;right: 50px;top: 20px;background:rgba(182, 182, 251, 0.73);border: 1px solid white;padding: 21px;border-radius:20px;"
     } else {
         var vidget = document.createElement('div');
 
-        vidget.style.cssText = "right: 50px;top: 20px;background:rgba(182, 182, 251, 0.73);border: 1px solid white;padding: 21px;border-radius:20px;"
+        vidget.style.cssText = "display:inline-block;right: 50px;top: 20px;background:rgba(182, 182, 251, 0.73);border: 1px solid white;padding: 21px;border-radius:20px;"
     }
 
     vidgetwrapper.classList.add('well', 'col-md-8', 'col-md-offset-2', 'clearfix')
@@ -61,13 +58,13 @@ function vidget(resp, orientation, Vid) {
         daylist.style.cssText = "display:flex; margin: 10px 0"
     }
 
-    obj.list.forEach(function(dayItem) {
+    for (var dayItem in obj.list) {
         let li = document.createElement('li');
         let data = document.createElement('p');
         let temperature = document.createElement('p');
-        li.style.cssText = "height: 50px";
-        temperature.textContent = (dayItem.temp.day + ' °C');
-        data.textContent = new Date(dayItem.dt * 1000).toLocaleDateString('ru', {
+        li.style.cssText = "height: 50px; margin:0 10px";
+        temperature.textContent = (obj.list[dayItem].temp.day + ' °C');
+        data.textContent = new Date(obj.list[dayItem].dt * 1000).toLocaleDateString('ru', {
             month: 'short',
             weekday: 'long',
             day: 'numeric'
@@ -76,7 +73,10 @@ function vidget(resp, orientation, Vid) {
         li.appendChild(data);
         li.appendChild(temperature);
         daylist.appendChild(li);
-    });
+        if (dayItem == rangeofdates - 1) break
+    };
+
+
     vidget.appendChild(cityName);
     vidget.appendChild(daylist);
     vidgetwrapper.appendChild(vidget)
@@ -88,10 +88,7 @@ function getWeather(cityid, daysr, Vid, orientation) {
     weatherreq.open('GET', '/forecast/' + cityid);
     weatherreq.onreadystatechange = function() {
         if (weatherreq.readyState === 4) {
-            console.log(JSON.parse(weatherreq.responseText))
-            console.log(weatherreq.responseText)
-            console.log(typeof(weatherreq.responseText))
-            vidget(weatherreq.responseText, orientation, Vid);
+            vidget(weatherreq.responseText, orientation, Vid, daysr);
         };
     };
     weatherreq.send(null);

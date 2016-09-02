@@ -1,30 +1,25 @@
-function requestNew(event, method, url, fields, orientation, Vid, callback) {
+function requestNew(event, method, url, fields, orientation, Vid, rangeofdates, callback) {
     if (method === 'put' || method === 'post') {
         var form = event.target.form,
             data = {};
-        console.log('fields->', fields)
         fields.forEach(function(formElName, ind, arr) {
-            console.log('formElName->', formElName.value)
             data[formElName] = form.elements[formElName].value;
             if (ind + 1 === arr.length) {
-                console.log('data->', data)
             };
         })
 
     }
-    var cityId = (event.target.form.elements.city) ? event.target.form.elements.city.value : ''
+    var cityId = (event.target.form.elements.city) ? event.target.form.elements.city.value : '',
+        newrequest = new XMLHttpRequest();
 
-    var newrequest = new XMLHttpRequest();
-    // console.log('url->', url + cityId + cnt, method)
     if (method === 'put' || method === 'delete') { newrequest.open(method, url + ((Vid) ? Vid + '/' : '')) } else {
         newrequest.open(method, url + ((Vid) ? Vid + '/' : '') + ((cityId) ? cityId + '/' : ''))
     }
     newrequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     newrequest.onreadystatechange = function() {
         if (newrequest.readyState === 4) {
-            console.log('newrequest.responseText->', newrequest.responseText, 'type->', typeof(newrequest.responseText))
+            if (JSON.parse(newrequest.responseText).alertText) { alert(JSON.parse(newrequest.responseText).alertText) };
             if (!Array.isArray(callback)) {
-                console.log('callback option')
                 return
             }
             callback.forEach(function(func) {

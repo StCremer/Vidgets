@@ -7,8 +7,7 @@ module.exports.cityList=function(req,res){
 redisClient.select(4)
 redisClient.hgetall('cities',function(err,reply){
 	if(err) {console.log(err)
-		return}
-	console.log(typeof(reply),'->',reply) 
+		return} 
 	res.render('getVidget',{page_name:'Get Weather', cities: reply})
 })
 }
