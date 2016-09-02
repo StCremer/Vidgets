@@ -1,21 +1,22 @@
 const redis = require('redis'),
     request = require('request')
 client = redis.createClient();
-client.select(4)
+client.select(4);
 
-client.hkeys('cities', function(err, reply) {
+function insertDada() {
+    client.hkeys('cities', (err, reply) => {
         if (err) {
             console.log(err)
             return
         }
-        reply.forEach(function(cityid) {
+        reply.forEach(cityid => {
             let weatherObj = {}
             request.get('http://api.openweathermap.org/data/2.5/forecast/daily?id=' + cityid + '&cnt=7&units=metric&lang=ru&APPID=f2dadcd28fb0f97c3c249b050975a9d4', function(err, response, body) {
                 if (err) {
                     console.log('err->', err)
                 }
                 if (!err && response.statusCode == 200) {
-                    client.set(cityid, body, function(err, reply) {
+                    client.set(cityid, body, (err, reply) => {
                         if (err) {
                             console.log('err->', err)
                             return
@@ -27,16 +28,15 @@ client.hkeys('cities', function(err, reply) {
             })
         })
     })
-    // let obj = JSON.parse(body),
-    //     daysList = obj.list
+}
+insertDada()
+var dateNow = new Date(),
+    year = dateNow.getFullYear(),
+    month = dateNow.getMonth(),
+    day = dateNow.getDay(),
+    dateTomorrow = new Date(year, month, day + 1, 12)
 
-//     weatherObj['cityName']=obj.city.name
-//     weatherObj['cityId']=obj.city.id
+setTimeout(() => {
+    setInterval(insertDada, 86400000)
+}, dateTomorrow.valueOf() - dateNow.valueOf())
 
-// daysList.forEach(function(day,ind,arr) {
-//     weatherObj['day.'+(ind+1)+'.date']=day.dt
-//     weatherObj['day.'+(ind+1)+'.temp']=day.temp.day
-//     if(ind+1===arr.length){
-//      console.log('weatherObj->',weatherObj) 
-//      })
-//     }

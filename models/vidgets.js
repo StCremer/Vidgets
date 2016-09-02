@@ -50,7 +50,7 @@ module.exports.newVidget = (req, res, next) => {
     })
 }
 
-module.exports.updateVidget = function(req, res, next) {
+module.exports.updateVidget = (req, res, next) => {
     let id = req.params.id
     redisClient.select(1)
     redisClient.hmset(id, 'cityId', req.body.city, 'rangeofdates', req.body.rangeofdates, 'orientation', req.body.orientation, 'Vid', id, (err, reply) => {
