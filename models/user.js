@@ -21,7 +21,7 @@ var User = mongoose.model('User', new Schema({
 
 
 
-module.exports.register = function(req, res) {
+module.exports.register = (req, res) => {
     console.log(req.body.name)
     var salt = bcrypt.genSaltSync(10),
         hash = bcrypt.hashSync(req.body.password, salt)
@@ -32,7 +32,7 @@ module.exports.register = function(req, res) {
     });
     console.log(user)
     console.log("before user saeve")
-    user.save(function(err) {
+    user.save(err => {
         if (err) {
             console.log(err)
             if (err.code === 11000) res.send('That Login is already taken, please try another.')
@@ -43,17 +43,15 @@ module.exports.register = function(req, res) {
     })
 }
 
-module.exports.login = function(req, res) {
-    User.findOne({ login: req.body.login }, function(err, user) {
+module.exports.login = (req, res) => {
+    User.findOne({ login: req.body.login }, (err, user) => {
         if (!user) {
-            console.log(user)
             res.send("---->Incorrect email / password.")
         } else {
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 req.session.user = user
                 req.session.logged = true
-                console.log(req.session.user)
-                res.send("logged in")
+                res.send({ alertText: "logged in" })
             } else {
                 req.session.destroy()
                 res.send("Incorrect login / password.")
@@ -63,7 +61,7 @@ module.exports.login = function(req, res) {
 
 }
 
-module.exports.requreLogin = function(req, res, next) {
+module.exports.requreLogin = (req, res, next) => {
     if (!req.session.user) {
         res.redirect('/log-in')
     } else {
@@ -72,7 +70,7 @@ module.exports.requreLogin = function(req, res, next) {
     }
 }
 
-module.exports.isLogined = function(req, res, next) {
+module.exports.isLogined = (req, res, next) => {
     if (req.session.user) {
         console.log('true')
         res.locals.user = req.session.user
@@ -80,8 +78,8 @@ module.exports.isLogined = function(req, res, next) {
     next()
 }
 
-module.exports.logout = function(req, res) {
-    req.session.destroy(function(err) {
+module.exports.logout = (req, res) => {
+    req.session.destroy(err => {
         if (err) {
             res.send("Something bad happend and you weren/t logout")
         } else { res.send("logged out") }

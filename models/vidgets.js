@@ -5,17 +5,17 @@ const request = require('request'),
     redis = require('redis'),
     express = require('express')
 
-module.exports.allvidgets = function(req, res) {
+module.exports.allvidgets = (req, res) => {
     let usersVidgets = []
     redisClient.select(2)
-    redisClient.smembers(req.session.user.login, function(err, reply) {
+    redisClient.smembers(req.session.user.login, (err, reply) => {
         if (err) {
             console.log(err)
             return
         }
         redisClient.select(1)
-        reply.forEach(function(vidgetid, ind, array) {
-            redisClient.hgetall(vidgetid, function(err, reply) {
+        reply.forEach((vidgetid, ind, array) => {
+            redisClient.hgetall(vidgetid, (err, reply) => {
                 if (err) { console.log('err->', err) }
                 usersVidgets.push(reply)
                 if (ind + 1 === array.length) {
@@ -27,11 +27,11 @@ module.exports.allvidgets = function(req, res) {
     })
 }
 
-module.exports.newVidget = function(req, res, next) {
+module.exports.newVidget = (req, res, next) => {
     let id = new Date().valueOf()
     redisClient.select(1)
 
-    redisClient.hmset(id, 'cityId', req.body.city, 'rangeofdates', req.body.rangeofdates, 'orientation', req.body.orientation, 'Vid', id, function(err, reply) {
+    redisClient.hmset(id, 'cityId', req.body.city, 'rangeofdates', req.body.rangeofdates, 'orientation', req.body.orientation, 'Vid', id, (err, reply) => {
         if (err) {
             console.log(err)
             return
@@ -53,9 +53,9 @@ module.exports.newVidget = function(req, res, next) {
 module.exports.updateVidget = function(req, res, next) {
     let id = req.params.id
     redisClient.select(1)
-    redisClient.hmset(id, 'cityId', req.body.city, 'rangeofdates', req.body.rangeofdates, 'orientation', req.body.orientation, 'Vid', id, function(err, reply) {
+    redisClient.hmset(id, 'cityId', req.body.city, 'rangeofdates', req.body.rangeofdates, 'orientation', req.body.orientation, 'Vid', id, (err, reply) => {
         if (err) {
-            console.log('updateVidget err->',err)
+            console.log('updateVidget err->', err)
             return
         }
         res.locals.alertText = 'vidget with id' + id + 'has been updated'
@@ -63,19 +63,19 @@ module.exports.updateVidget = function(req, res, next) {
     })
 }
 
-module.exports.deleteVidget = function(req, res) {
+module.exports.deleteVidget = (req, res) => {
     let id = req.params.id
 
     redisClient.select(1)
-    redisClient.del(req.params.id, function(err, reply) {
+    redisClient.del(req.params.id, (err, reply) => {
         if (err) {
-            console.log('deleteVidget del err->',err)
+            console.log('deleteVidget del err->', err)
             return
         }
         redisClient.select(2)
-        redisClient.srem(req.session.user.login, id, function(err, reply) {
+        redisClient.srem(req.session.user.login, id, (err, reply) => {
             if (err) {
-                console.log('deleteVidget srem err->',err)
+                console.log('deleteVidget srem err->', err)
                 return
             }
             res.send('Vidjet has been deleted')
@@ -84,14 +84,14 @@ module.exports.deleteVidget = function(req, res) {
 }
 
 
-module.exports.getVidget = function(req, res) {
+module.exports.getVidget = (req, res) => {
 
     console.log('req.body ->' + JSON.stringify(req.body));
     console.log('req.params.id ->', req.params.id);
     redisClient.select(1)
-    redisClient.hgetall(req.params.id, function(err, reply) {
+    redisClient.hgetall(req.params.id, (err, reply) => {
         if (err) {
-            console.log('getVidget err->',err)
+            console.log('getVidget err->', err)
             return
         }
         res.render('editVidget', { vidget: reply, Vid: req.params.id })

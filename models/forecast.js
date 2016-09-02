@@ -5,13 +5,13 @@ const request = require('request'),
     redis = require('redis')
 
 
-module.exports.getForecast = function(req, res) {
+module.exports.getForecast = (req, res) => {
     redisClient.select(4)
-    redisClient.get(req.params.id, function(err, reply) {
+    redisClient.get(req.params.id, (err, reply) => {
         if (err) {
             console.log('getForecast err->', err)
             return
         }
-        res.send({alertText:res.locals.alertText, forecast: JSON.parse(reply) })
+        res.send({ alertText: res.locals.alertText, forecast: JSON.parse(reply) })
     })
 }

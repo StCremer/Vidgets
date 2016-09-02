@@ -3,9 +3,9 @@ const fs = require('fs'),
      redisData = require('./RedisData'),
     redisClient = redisData.redisClient
 
-module.exports.cityList=function(req,res){
+module.exports.cityList=(req,res)=>{
 redisClient.select(4)
-redisClient.hgetall('cities',function(err,reply){
+redisClient.hgetall('cities',(err,reply)=>{
 	if(err) {console.log(err)
 		return} 
 	res.render('getVidget',{page_name:'Get Weather', cities: reply})
